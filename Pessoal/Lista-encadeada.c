@@ -6,6 +6,7 @@ typedef struct {
     int num;
     struct No* prox;
 }No;
+
 typedef struct{
     No* inicio;
     int cont;
