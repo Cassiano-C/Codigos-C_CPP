@@ -116,7 +116,9 @@ imprimir_matriz(double A[N][N], double b[N])
     printf("\n");
 }
 
-int main() {
+int
+main()
+{
     /*
     ===================================================
     Quantidade de threads: 8
