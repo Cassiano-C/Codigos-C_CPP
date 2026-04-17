@@ -29,7 +29,7 @@ Para compilar o código com suporte a multiprocessamento, utilize a flag `-fopen
 
 ```bash
 # Compilação
-gcc -O3 -fopenmp Jacobi.c -o main
+gcc -fopenmp Jacobi.c -o main
 
 # Execução
 ./main
