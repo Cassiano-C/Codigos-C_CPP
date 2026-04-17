@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-//#define N 500 // tamanho da matriz
 #define N 1000 // tamanho da matriz
 #define MAX_ITER 1000 // número máximo de iterações
 #define TOL 1e-6 // tolerância para convergência
@@ -188,18 +187,25 @@ main()
     jacobi_parallel(A, b, x_p);
     fim_p = omp_get_wtime();
 
-    printf("Quantidade de threads: %d\n\n", omp_get_max_threads());
+    // Cálculos de apoio
+    double tempo_n = fim_n - inicio_n;
+    double tempo_p = fim_p - inicio_p;
+    double diferenca = tempo_n - tempo_p;
+    double aceleracao = tempo_n / tempo_p;
 
-    printf("Solução: \n");
-    printf("Tempo de execução: %f segundos\n\n", fim_n - inicio_n);
-    
-    printf("Solução paralela: \n");
-    printf("Tempo de execução paralelo: %f segundos\n\n", fim_p - inicio_p);
-
-    // se der diferença de tempo negativa, o paralelo foi mais rápido
-    printf("Diferença de tempo: %f segundos\n\n", (fim_n - inicio_n) - (fim_p - inicio_p));
-
-    printf("Aceleração: %f\n\n", (fim_n - inicio_n) / (fim_p - inicio_p));
+    printf("\n==========================================================\n");
+    printf("           RESULTADOS DO MÉTODO DE JACOBI (N=%d)          \n", N);
+    printf("==========================================================\n");
+    printf(" %-25s | %-20s \n", "MÉTRICA", "VALOR");
+    printf("---------------------------|------------------------------\n");
+    printf(" %-25s | %d\n", "Quantidade de Threads", omp_get_max_threads());
+    printf(" %-25s | %.6f seg\n", "Tempo Sequencial", tempo_n);
+    printf(" %-25s | %.6f seg\n", "Tempo Paralelo", tempo_p);
+    printf("---------------------------|------------------------------\n");
+    printf(" %-25s | %.6f seg\n", "Ganho de Tempo (Líquido)", diferenca);
+    printf(" %-25s | %.2fx\n", "Speedup (Aceleração)", aceleracao);
+    printf(" %-25s | %.2f%%\n", "Eficiência por Núcleo", (aceleracao / omp_get_max_threads()) * 100);
+    printf("==========================================================\n\n");
 
     //imprimir_matriz(A, b);
     return 0;
