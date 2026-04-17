@@ -10,7 +10,7 @@ Nessa pasta ira conter alguns codigos em C/C++ focados em programação paralela
 
 | Pastas | Descrição | Técnica |
 | :--- | :---: | ---: |
-| **teste.c** | Primeiro arquivo de paralelismo | `#pragma omp parallel for`|
+| **teste.c** | Primeiro arquivo de paralelismo | `#pragma omp parallel`|
 | **Trabalhos_01** | Resolução de sistemas lineares | `#pragma omp parallel for` |
 
 ## Trabalho 01
