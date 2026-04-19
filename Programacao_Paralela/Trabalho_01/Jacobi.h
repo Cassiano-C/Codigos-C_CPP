@@ -6,7 +6,7 @@
 #include <omp.h>
 #include <cstdlib>
 #include <ctime>
-#include "resposta.h"
+#include "Resposta.h"
 
 class Jacobi
 {
