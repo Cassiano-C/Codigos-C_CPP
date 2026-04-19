@@ -18,8 +18,8 @@ Toda a estrutura do codigo foi feita para poder fazer testes com varios tamanho 
 
 | Imagens dos Codigos |
 | :---: |
-| <img src="./Imagens/Roda_testes.png" width="45%"> <img src="./Imagens/Jacobi_normal.png" width="45%"> |
-| <img src="./Imagens/Jacobi_parallel.png" width="45%"> <img src="./Imagens/Matriz_generate.png" width="45%"> |
+| <img src="./Imagens/Jacobi_normal.png" width="45%"> <img src="./Imagens/Jacobi_parallel.png" width="45%"> |
+| <img src="./Imagens/Roda_testes.png" width="45%"> <img src="./Imagens/Matriz_generate.png" width="45%"> |
 
 ## Ideia Geral
 O método de Jacobi resolve o sistema linear de forma iterativa. O procedimento consiste em:
