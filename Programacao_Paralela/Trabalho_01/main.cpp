@@ -3,7 +3,8 @@
 #define N_THREADS 4 // Número de threads para execução paralela
 
 template <size_t N>
-void rodar_testes(Jacobi& Jacobi)
+inline void 
+rodar_testes(Jacobi& Jacobi)
 {
     Resposta resposta_normal, resposta_parallel;
     double inicio_n, fim_n, inicio_p, fim_p;
@@ -23,10 +24,10 @@ void rodar_testes(Jacobi& Jacobi)
     fim_p = omp_get_wtime();
 
     // Cálculos de apoio
-    double tempo_n = fim_n - inicio_n;
-    double tempo_p = fim_p - inicio_p;
-    
-    Jacobi.print(tempo_n, tempo_p, resposta_normal, resposta_parallel,N);
+    resposta_normal.tempo = fim_n - inicio_n;
+    resposta_parallel.tempo = fim_p - inicio_p;
+
+    Jacobi.print(resposta_normal, resposta_parallel, N);
 }
 
 int
@@ -34,8 +35,9 @@ main()
 {
     omp_set_num_threads(N_THREADS); // Ajuste o número de threads conforme necessário
     Jacobi jacobi;
-    rodar_testes<100>(jacobi); // Teste para N=100
+    rodar_testes<250>(jacobi); // Teste para N=250
     rodar_testes<500>(jacobi); // Teste para N=500
     rodar_testes<1000>(jacobi); // Teste para N=1000
+    rodar_testes<1500>(jacobi); // Teste para N=1500
     return 0;
 }

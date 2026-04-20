@@ -8,8 +8,9 @@ class Resposta
 public:
     double error;
     int iter;
+    double tempo;
 
-    Resposta() : error(0.0), iter(0) {}
+    Resposta() : error(0.0), iter(0), tempo(0.0) {}
 };
 
 #endif /* resposta_h */
