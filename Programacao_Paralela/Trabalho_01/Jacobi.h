@@ -17,7 +17,7 @@ private:
 public:
 
 template <size_t N>
-inline Resposta
+Resposta
 jacobi_normal_N(double A[N][N], double b[N], double x[N])
 {
     double x_new[N];
@@ -52,7 +52,7 @@ jacobi_normal_N(double A[N][N], double b[N], double x[N])
 
 
 template <size_t N>
-inline Resposta
+Resposta
 jacobi_parallel_N(double A[N][N], double b[N], double x[N])
 {
     double x_new[N];
@@ -91,7 +91,7 @@ jacobi_parallel_N(double A[N][N], double b[N], double x[N])
 }
 
 template <size_t N>
-inline void 
+void 
 gerar_matriz_N(double A[N][N], double b[N], double x_n[N], double x_p[N], int n)
 {
     // O uso de static aqui garante que a semente seja definida uma única vez
@@ -121,30 +121,30 @@ gerar_matriz_N(double A[N][N], double b[N], double x_n[N], double x_p[N], int n)
     }
 }
 
-inline void
+void
 print(Resposta resposta_normal, Resposta resposta_parallel, int N)
 {
     double diferenca = resposta_normal.tempo - resposta_parallel.tempo;
     double aceleracao = resposta_normal.tempo / resposta_parallel.tempo;
-    printf("\n==========================================================\n");
-    printf("           RESULTADOS DO MÉTODO DE JACOBI (N=%d)          \n", N);
-    printf("==========================================================\n");
-    printf(" %-26s | %-20s \n", "MÉTRICA", "VALOR");
-    printf("---------------------------|------------------------------\n");
-    printf(" %-25s | %d\n", "Quantidade de Threads", omp_get_max_threads());
-    printf(" %-25s | %.6f seg\n", "Tempo Sequencial", resposta_normal.tempo);
-    printf(" %-25s | %.6f seg\n", "Tempo Paralelo", resposta_parallel.tempo);
-    printf("---------------------------|------------------------------\n");
-    printf(" %-25s | %.6f \n", "Erro Sequencial", resposta_normal.error);
-    printf(" %-25s | %.6f \n", "Erro Paralelo", resposta_parallel.error);
-    printf("---------------------------|------------------------------\n");
-    printf(" %-27s | %d \n", "Iterações Sequencial", resposta_normal.iter);
-    printf(" %-27s | %d \n", "Iterações Paralelo", resposta_parallel.iter);
-    printf("---------------------------|------------------------------\n");
-    printf(" %-26s | %.6f seg\n", "Ganho de Tempo (Líquido)", diferenca);
-    printf(" %-27s | %.2fx\n", "Speedup (Aceleração)", aceleracao);
-    printf(" %-27s | %.2f%%\n", "Eficiência por Núcleo", (aceleracao / omp_get_max_threads()) * 100);
-    printf("==========================================================\n\n");
+    printf("\n╔═════════════════════════════════════════════════════════╗\n");
+    printf("║          RESULTADOS DO MÉTODO DE JACOBI (N=%4d)        ║\n", N);
+    printf("╠═══════════════════════════╤═════════════════════════════╣\n");
+    printf("║ %-26s │ %-27s ║\n", "MÉTRICA", "VALOR");
+    printf("╠═══════════════════════════╪═════════════════════════════╣\n");
+    printf("║ %-25s │ %-27d ║\n", "Quantidade de Threads", omp_get_max_threads());
+    printf("║ %-25s │ %-27.6f ║\n", "Tempo Sequencial (s)", resposta_normal.tempo);
+    printf("║ %-25s │ %-27.6f ║\n", "Tempo Paralelo (s)", resposta_parallel.tempo);
+    printf("╟───────────────────────────┼─────────────────────────────╢\n");
+    printf("║ %-25s │ %-27.6f ║\n", "Erro Sequencial", resposta_normal.error);
+    printf("║ %-25s │ %-27.6f ║\n", "Erro Paralelo", resposta_parallel.error);
+    printf("╟───────────────────────────┼─────────────────────────────╢\n");
+    printf("║ %-27s │ %-27d ║\n", "Iterações Sequencial", resposta_normal.iter);
+    printf("║ %-27s │ %-27d ║\n", "Iterações Paralelo", resposta_parallel.iter);
+    printf("╟───────────────────────────┼─────────────────────────────╢\n");
+    printf("║ %-25s │ %-27.6f ║\n", "Ganho de Tempo (s)", diferenca);
+    printf("║ %-25s │ %-27.2f ║\n", "Speedup (x)", aceleracao);
+    printf("║ %-25s │ %-27.2f ║\n", "Eficiência por Núcleo (%)", (aceleracao / omp_get_max_threads()) * 100);
+    printf("╚═══════════════════════════╧═════════════════════════════╝\n\n");
 }
 
 };
