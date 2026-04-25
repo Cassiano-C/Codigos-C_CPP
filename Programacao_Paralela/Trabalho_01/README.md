@@ -44,8 +44,5 @@ g++ -fopenmp *.cpp -o main
 ## Relatorio
 É um relatorio que contem os resultados alcançados com os testes.
 
-[Clique aqui para visualizar o Relatório de Programa (PDF)](./Relatorio%20de%20programa-Para.pdf)
-
-
-<embed src="./Relatorio%20de%20programa-Para.pdf" width="500" height="375" type="application/pdf">
+[Clique aqui para visualizar o Relatório de Programa (PDF)](./Codigos-C_CPP/Programacao_Paralela/Trabalho_01/Relatorio%20de%20programa-Para.pdf)
 
