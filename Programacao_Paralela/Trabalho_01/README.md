@@ -44,4 +44,8 @@ g++ -fopenmp *.cpp -o main
 ## Relatorio
 É um relatorio que contem os resultados alcançados com os testes.
 
-<a href="./Relatorio%20de%20programa-Para.pdf" target="_blank">Abrir Relatório no Navegador</a>
+[Clique aqui para visualizar o Relatório de Programa (PDF)](./Relatorio%20de%20programa-Para.pdf)
+
+
+<embed src="./Relatorio%20de%20programa-Para.pdf" width="500" height="375" type="application/pdf">
+
