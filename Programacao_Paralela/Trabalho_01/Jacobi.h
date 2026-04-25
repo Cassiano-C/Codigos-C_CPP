@@ -66,7 +66,7 @@ jacobi_parallel_N(double A[N][N], double b[N], double x[N])
         /*
             O uso de #pragma omp parallel for é necessário para paralelizar o loop que calcula os novos valores de x (x_new). 
             Isso permite que as iterações do loop sejam distribuídas entre as threads disponíveis, acelerando o processo de cálculo dos novos valores de x. 
-            Sem essa diretiva, o loop seria executado sequencialmente, o que não aproveitaria os
+            Sem essa diretiva, o loop seria executado sequencialmente, o que não aproveitaria os benefícios da paralelização.
 
             E usar o schedule(static) é uma escolha comum para loops que têm uma carga de trabalho uniforme, como neste caso, onde cada iteração do loop tem aproximadamente o mesmo tempo de execução.
             onde ele divide o loop em blocos de iterações e atribui cada bloco a uma thread. Isso pode ajudar a reduzir a sobrecarga de gerenciamento de threads e melhorar o desempenho, especialmente quando o número de iterações é grande.
