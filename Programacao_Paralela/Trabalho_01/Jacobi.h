@@ -62,11 +62,18 @@ jacobi_parallel_N(double A[N][N], double b[N], double x[N])
     while (error > TOL && resposta.iter < MAX_ITER)
     {
         error = 0.0; // Inicializar o erro para a iteração atual
-        #pragma omp parallel for schedule(static) // Paralelizar o loop externo para calcular x_new
+        #pragma omp parallel for schedule(static) // o schule(static) vai dividir o loop pela quantidade de threads disponiveis, e cada thread vai executar uma parte do loop
+        /*
+            O uso de #pragma omp parallel for é necessário para paralelizar o loop que calcula os novos valores de x (x_new). 
+            Isso permite que as iterações do loop sejam distribuídas entre as threads disponíveis, acelerando o processo de cálculo dos novos valores de x. 
+            Sem essa diretiva, o loop seria executado sequencialmente, o que não aproveitaria os
+
+            E usar o schedule(static) é uma escolha comum para loops que têm uma carga de trabalho uniforme, como neste caso, onde cada iteração do loop tem aproximadamente o mesmo tempo de execução.
+            onde ele divide o loop em blocos de iterações e atribui cada bloco a uma thread. Isso pode ajudar a reduzir a sobrecarga de gerenciamento de threads e melhorar o desempenho, especialmente quando o número de iterações é grande.
+        */
         for (int i = 0; i < N; i++)
         {
             double sum = 0.0;
-            //#pragma omp parallel for reduction(+:sum) schedule(static) // sum é uma variável compartilhada/global, então precisamos de redução
             for (int j = 0; j < N; j++) 
             {
                 if (j != i) 
@@ -78,18 +85,27 @@ jacobi_parallel_N(double A[N][N], double b[N], double x[N])
         }
         // Verificar convergência
         #pragma omp parallel for reduction(+:error) schedule(static) // error é uma variável compartilhada/global, então precisamos de redução
+        /*
+            O uso de reduction(+:error) é necessário para garantir que a variável error seja atualizada corretamente quando várias threads estão somando seus valores locais de error. 
+            Sem a redução, haveria uma condição de corrida, onde múltiplas threads tentariam atualizar a mesma variável error simultaneamente, resultando em um valor incorreto. 
+            A redução garante que cada thread tenha sua própria cópia local de error, e no final do loop, os valores locais são somados para obter o valor total de error.
+        */ 
         for (int i = 0; i < N; i++)
         {
             error += fabs(x_new[i] - x[i]);
             x[i] = x_new[i]; // Atualizar x para a próxima iteração
         }
         resposta.iter++; // Incrementar o contador de iterações
-        // #pragma omp barrier Nao é necessario, pois quando se usa o #pragma omp parallel for, o programa já espera que todas as threads terminem antes de continuar para a próxima linha de código.
+        /*
+            #pragma omp barrier Nao é necessario, pois quando se usa o #pragma omp parallel for, 
+            o programa já espera que todas as threads terminem antes de continuar para a próxima linha de código.
+        */ 
     }
     resposta.error = error;
     return resposta;
 }
 
+// Foi feito por uma IA, para gerar a matriz A, o vetor b e os vetores x_n e x_p. A matriz A é gerada de forma a ser diagonalmente dominante, o que garante a convergência do método de Jacobi. O vetor b é preenchido com valores aleatórios, e os vetores x_n e x_p são inicializados com zeros. O uso de static para a semente do rand() garante que a semente seja definida apenas uma vez, evitando que a matriz seja gerada da mesma forma em cada chamada da função.
 template <size_t N>
 void 
 gerar_matriz_N(double A[N][N], double b[N], double x_n[N], double x_p[N], int n)

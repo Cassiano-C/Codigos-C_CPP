@@ -44,7 +44,237 @@ Scanner::nextToken()
     Token* tok;
     string lexeme;
 
-    //TODO
+    while (isspace(input[pos]))
+        pos++;
+    
+    if (input[pos] == '\0')
+    {
+        tok = new Token(END_OF_FILE);
+        
+    }
+    else if(input[pos] == '"')
+    {
+        pos++; // pula a aspa inicial
+        while (input[pos] != '"')
+        {
+            if (input[pos] == '\n')
+                line++;
+            lexeme += input[pos];
+            pos++;
+        }
+        pos++; // pula a aspa final
+        tok = new Token(STRINGCONST, lexeme);
+        
+    }
+    else if(input[pos] == '\'')
+    {
+        pos++; // pula a aspa inicial
+        if (input[pos] == '\\') // caractere de escape
+        {
+            lexeme += input[pos];
+            pos++;
+            if(input[pos] == '\'') lexicalError("Caractere constante mal formado");
+            lexeme += input[pos];
+            pos++;
+        }
+        else
+        {
+            lexeme += input[pos]; // adiciona o caractere normal
+            pos++;
+        }
+        if (input[pos] != '\'')
+        {
+            lexicalError("Caractere constante mal formado");
+        }
+        pos++; // pula a aspa final
+        tok = new Token(CHARCONST, lexeme);
+        
+    }
+    else if(input[pos] == '/')
+    {
+        if(input[pos + 1] == '/')
+        {
+            while (input[pos] != '\n')
+                pos++;
+            line++;
+        }
+        else if(input[pos + 1] == '*')
+        {
+            pos += 2; // vai pra posição do primeiro caractere após /*
+            while (input[pos] != '*' || input[pos + 1] != '/')
+            {
+                if (input[pos] == '\n')
+                    line++;
+                pos++;
+            }
+            pos += 2; // vai pra posição do primeiro caractere após */
+        }
+        else
+        {
+            tok = new Token(OPERATOR, DIVIDE);
+            pos++;
+            
+        }
+    }
+    else if(isdigit(input[pos]))
+    {
+        while (isdigit(input[pos]))
+        {
+            lexeme += input[pos];
+            pos++;
+        }
+        tok = new Token(INTCONST, lexeme);
+        
+    }
+    else if(isalpha(input[pos]))
+    {
+        while (isalpha(input[pos]) || isalnum(input[pos]) || input[pos] == '_')
+        {
+            lexeme += input[pos];
+            pos++;
+        }
+        tok = new Token(IDENTIFIER, lexeme);
+        
+    }
+    else if(input[pos] == '+')
+    {
+        tok = new Token(OPERATOR, PLUS);
+        pos++;
+        
+    }
+    else if(input[pos] == '-')
+    {
+        tok = new Token(OPERATOR, MINUS);
+        pos++;
+        
+    }
+    else if(input[pos] == '*')
+    {
+        tok = new Token(OPERATOR, MULTIPLY);
+        pos++;
+        
+    }
+    else if(input[pos] == '=')
+    {
+        if(input[pos + 1] == '=')
+        {
+            tok = new Token(OPERATOR, EQUALS_EQUALS);
+            pos += 2;
+        }
+        else
+        {
+            tok = new Token(OPERATOR, EQUALS);
+            pos++;
+        }
+        
+    }
+    else if(input[pos] == '!')
+    {
+        if(input[pos + 1] == '=')
+        {
+            tok = new Token(OPERATOR, NOT_EQUALS);
+            pos += 2;
+            
+        }
+    }
+    else if(input[pos] == '<')
+    {
+        if(input[pos + 1] == '=')
+        {
+            tok = new Token(OPERATOR, LESS_EQUALS);
+            pos += 2;
+        }
+        else
+        {
+            tok = new Token(OPERATOR, LESS);
+            pos++;
+        }
+        
+    }
+    else if(input[pos] == '>')
+    {
+        if(input[pos + 1] == '=')
+        {
+            tok = new Token(OPERATOR, GREATER_EQUALS);
+            pos += 2;
+        }
+        else
+        {
+            tok = new Token(OPERATOR, GREATER);
+            pos++;
+        }
+        
+    }
+    else if(input[pos] == '&' && input[pos + 1] == '&')
+    {
+        tok = new Token(OPERATOR, AND);
+        pos += 2;
+        
+    }
+    else if(input[pos] == '|' && input[pos + 1] == '|')
+    {
+        tok = new Token(OPERATOR, OR);
+        pos += 2;
+        
+    }
+    else if(input[pos] == '!')
+    {
+        tok = new Token(OPERATOR, NOT);
+        pos++;
+        
+    }
+    else if(input[pos] == '(')
+    {
+        tok = new Token(LPAREN);
+        pos++;
+        
+    }
+    else if(input[pos] == ')')
+    {
+        tok = new Token(RPAREN);
+        pos++;
+        
+    }
+    else if(input[pos] == '{')
+    {
+        tok = new Token(LBRACE);
+        pos++;
+        
+    }
+    else if(input[pos] == '}')
+    {
+        tok = new Token(RBRACE);
+        pos++;
+        
+    }
+    else if(input[pos] == '[')
+    {
+        tok = new Token(LBRACKET);
+        pos++;
+        
+    }
+    else if(input[pos] == ']')
+    {
+        tok = new Token(RBRACKET);
+        pos++;
+        
+    }
+    else if(input[pos] == ',')
+    {
+        tok = new Token(COMMA);
+        pos++;
+        
+    }
+    else if(input[pos] == ';')
+    {
+        tok = new Token(SEMICOLON);
+        pos++;
+        
+    }
+    else
+    {
+        lexicalError("Caractere inválido: " + string(1, input[pos]));
+    }
 
     return tok;
  
