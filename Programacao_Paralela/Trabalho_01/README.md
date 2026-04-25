@@ -40,3 +40,8 @@ g++ -fopenmp *.cpp -o main
 # Execução
 ./main
 ```
+
+## Relatorio
+É um relatorio que contem os resultados alcançados com os testes.
+
+<a href="./Relatorio%20de%20programa-Para.pdf" target="_blank">Abrir Relatório no Navegador</a>
