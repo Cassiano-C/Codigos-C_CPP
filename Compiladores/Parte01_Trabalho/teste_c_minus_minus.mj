@@ -1,0 +1,44 @@
+/*
+  Arquivo de Teste para o Compilador C-- (Etapa de Análise Léxica)
+  Disciplina: Compiladores I - UFMS / FACOM
+  Profa. Bianca de Almeida Dantas
+*/
+
+// Exemplo de variáveis e identificadores (Regras 1, 2, 3 e 10)
+int contador_123 = 100;
+int valor = 0;
+
+/* Teste de Comentário em Bloco (Regra 9)
+   Este bloco deve ser totalmente ignorado pelo analisador léxico.
+*/
+
+// Teste de Constantes de Caractere (Regra 5)
+char c1 = 'a';
+char c2 = '\n';
+char c3 = '\0';
+
+// Teste de Constantes de String (Regra 6)
+string saudacao = "Ola Mundo 123!";
+string vazia = "";
+
+// Teste de Operadores (Regra 7)
+// + - * / = == != <= < >= > && || !
+if (contador_123 >= 10 && valor != 5) {
+    valor = (contador_123 + 5) * 2 / 1;
+}
+
+// Teste de Separadores e Identificadores como palavras reservadas (Regra 8 e OBS)
+// ( ) { } [ ] , ;
+int main() {
+    int[] lista;
+    lista[0] = 50;
+    
+    if (valor < 20 || !false) {
+        return valor;
+    }
+}
+
+// Teste de espaços em branco (Regra 10)
+    int      espacado   =      10 ;
+
+// Fim do arquivo de teste

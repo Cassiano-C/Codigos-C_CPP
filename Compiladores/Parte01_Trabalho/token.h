@@ -62,4 +62,18 @@ class Token
             this->name = name;
             attribute = attr;
         }
+        
+        string nameToString() {
+            static const string names[] = {
+                "UNDEF", "IDENTIFIER", "INTCONST", "CHARCONST", "STRINGCONST",
+                "OPERATOR", "PLUS", "MINUS", "MULTIPLY", "DIVIDE",
+                "EQUALS", "EQUALS_EQUALS", "NOT_EQUALS", "LESS", "LESS_EQUALS",
+                "GREATER", "GREATER_EQUALS", "AND", "OR", "NOT",
+                "LPAREN", "RPAREN", "LBRACE", "RBRACE", "LBRACKET", "RBRACKET",
+                "COMMA", "SEMICOLON", "END_OF_FILE"
+            };
+            if (name >= 0 && name <= END_OF_FILE)
+                return names[name];
+            return "UNKNOWN";
+        }
 };

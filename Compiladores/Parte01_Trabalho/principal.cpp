@@ -1,32 +1,34 @@
 #include "scanner.h"
+#include <iomanip> // Para organizar em colunas
 
 int main(int argc, char* argv[]) 
 {
-    //Verifica se foi executado corretamente
-    //Essa main espera receber o nome do arquivo a ser
-    //executado na linha de comando.
     if (argc != 2)
     {
         cout << "Uso: ./compiler nome_arquivo.mj\n";
         return 1;
     }
 
-    string input;
-    
-    //getline(cin, input);
-
     Scanner* scanner = new Scanner(argv[1]);
-    
     Token* t;
     
+    cout << "\n--- INICIO DA ANALISE LEXICA ---\n";
+    cout << left << setw(20) << "TIPO" << " | " << "LEXEMA" << endl;
+    cout << "---------------------------------------" << endl;
+
     do
     {
         t = scanner->nextToken();
         
-        cout << t->name << " ";
-    }while (t->name != END_OF_FILE);
+        // Exibe o nome amigável e o conteúdo do lexema
+        cout << left << setw(20) << t->nameToString() 
+             << " | [" << t->lexeme << "]" << endl;
+             
+    } while (t->name != END_OF_FILE);
+
+    cout << "---------------------------------------" << endl;
+    cout << "Fim da analise.\n";
 
     delete scanner;
-    
     return 0;
 }
