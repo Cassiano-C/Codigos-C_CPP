@@ -12,9 +12,9 @@ int main(int argc, char* argv[])
     Scanner* scanner = new Scanner(argv[1]);
     Token* t;
     
-    cout << "\n--- INICIO DA ANALISE LEXICA ---\n";
-    cout << left << setw(20) << "TIPO" << " | " << "LEXEMA" << endl;
-    cout << "---------------------------------------" << endl;
+    cout << "\n─── INICIO DA ANALISE LEXICA ───\n";
+    cout << left << setw(20) << "TIPO" << " │ " << "LEXEMA" << endl;
+    cout << "───────────────────────────────────────" << endl;
 
     do
     {
@@ -22,11 +22,12 @@ int main(int argc, char* argv[])
         
         // Exibe o nome amigável e o conteúdo do lexema
         cout << left << setw(20) << t->nameToString() 
-             << " | [" << t->lexeme << "]" << endl;
+             << " │ [" << t->lexeme << "]" 
+             << endl;
              
     } while (t->name != END_OF_FILE);
 
-    cout << "---------------------------------------" << endl;
+    cout << "───────────────────────────────────────" << endl;
     cout << "Fim da analise.\n";
 
     delete scanner;
