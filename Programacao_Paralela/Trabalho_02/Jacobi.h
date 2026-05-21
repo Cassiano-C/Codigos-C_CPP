@@ -130,7 +130,11 @@ public:
 
         // Como rodamos iterações fixas na GPU, o erro exato exigiria uma redução paralela.
         // Para simplificar o escopo do seu código atual, deixaremos o erro zerado ou calculado no final.
-        resposta.error = 0.0; 
+        resposta.error = 0.0;
+        for (int i=0; i < N;i++)
+        {
+            resposta.error += std::abs(x[i] - x[i]); // Aqui você pode calcular o erro em relação a uma solução conhecida ou algo similar
+        }
 
         return resposta;
     }
@@ -162,12 +166,12 @@ public:
         }
     }
 
-    void cria_arquivo(Resposta resposta_normal, Resposta resposta_parallel, int N, const std::string &nome_arquivo)
+    void cria_arquivo(Resposta resposta_normal, Resposta resposta_parallel, int N,int threadsPerBlock, const std::string &nome_arquivo)
     {
         double diferenca = resposta_normal.tempo - resposta_parallel.tempo;
         double aceleracao = resposta_normal.tempo / resposta_parallel.tempo;
 
-        FILE *arquivo = fopen(nome_arquivo.c_str(), "w");
+        FILE *arquivo = fopen(nome_arquivo.c_str(), "a");
         if (arquivo == NULL) {
             printf("Erro ao criar o arquivo de resultados.\n");
             return;
@@ -176,6 +180,8 @@ public:
         // Removido o 'omp_get_max_threads()' para evitar dependência do OpenMP se não for usar
         fprintf(arquivo, "\n╔═════════════════════════════════════════════════════════╗\n");
         fprintf(arquivo, "║          RESULTADOS DO MÉTODO DE JACOBI (N=%4d)        ║\n", N);
+        fprintf(arquivo, "╟─────────────────────────────────────────────────────────╢\n");
+        fprintf(arquivo, "║          Threads por Bloco: %4d                        ║\n", threadsPerBlock);
         fprintf(arquivo, "╠═══════════════════════════╤═════════════════════════════╣\n");
         fprintf(arquivo, "║ %-26s │ %-27s ║\n", "MÉTRICA", "VALOR");
         fprintf(arquivo, "╠═══════════════════════════╪═════════════════════════════╣\n");

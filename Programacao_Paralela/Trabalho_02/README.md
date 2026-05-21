@@ -36,7 +36,7 @@ Para compilar o código com suporte a CUDA, tem que te um placa de video da NVID
 
 ```bash
 # Compilação
-nvcc -O3 *.cu -o main
+nvcc -O3 main.cu -o main
 
 # Execução
 ./main
