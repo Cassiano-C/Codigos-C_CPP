@@ -127,15 +127,7 @@ public:
         cudaFree(d_b);
         cudaFree(d_xOld);
         cudaFree(d_xNew);
-
-        // Como rodamos iterações fixas na GPU, o erro exato exigiria uma redução paralela.
-        // Para simplificar o escopo do seu código atual, deixaremos o erro zerado ou calculado no final.
-        resposta.error = 0.0;
-        for (int i=0; i < N;i++)
-        {
-            resposta.error += std::abs(x[i] - x[i]); // Aqui você pode calcular o erro em relação a uma solução conhecida ou algo similar
-        }
-
+        
         return resposta;
     }
 
