@@ -46,9 +46,9 @@ Scanner::nextToken()
 
     while (isspace(input[pos])) // Ignora espaços em branco e as quebras de linha
     {
-        pos++;
         if(input[pos] == '\n')
             line++;
+        pos++;
     }
     
     if (pos >= input.length() || input[pos] == '\0')

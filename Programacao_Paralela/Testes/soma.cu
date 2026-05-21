@@ -29,7 +29,7 @@ int main() {
 
     // 2. Alocar memória no "Device" (GPU)
     float *d_A, *d_B, *d_C;
-    cudaMalloc(&d_A, bytes);
+    cudaMalloc(&d_A, bytes);    
     cudaMalloc(&d_B, bytes);
     cudaMalloc(&d_C, bytes);
 

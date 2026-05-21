@@ -23,7 +23,7 @@ string vazia = "";
 
 // Teste de Operadores (Regra 7)
 // + - * / = == != <= < >= > && || !
-if (contador_123 >= 10 && valor != 5) {
+if (contador_123 >= 10 &&& valor != 5) {
     valor = (contador_123 + 5) * 2 / 1;
 }
 
