@@ -109,7 +109,7 @@ public:
             d_xNew = tmp;
         }
 
-        cudaEventRecord(stop); // Parar cronômetro da GPU
+        cudaEventRecord(stop); 
         cudaEventSynchronize(stop);
         
         float milliseconds = 0;
@@ -119,15 +119,31 @@ public:
         cudaEventDestroy(start);
         cudaEventDestroy(stop);
 
-        // Copiar o resultado final (que terminou no d_xOld devido à última troca) de volta para a CPU
-        cudaMemcpy(x, d_xOld, N * sizeof(double), cudaMemcpyDeviceToHost);
+        // [NOVO] Alocar vetores na CPU para medir a diferença da última iteração
+        double *h_xFinal = new double[N];
+        double *h_xAnterior = new double[N];
+
+        // d_xOld contém o x da última iteração e d_xNew contém o da penúltima (por causa da troca de ponteiros)
+        cudaMemcpy(h_xFinal, d_xOld, N * sizeof(double), cudaMemcpyDeviceToHost);
+        cudaMemcpy(h_xAnterior, d_xNew, N * sizeof(double), cudaMemcpyDeviceToHost);
+
+        // [NOVO] Calcular o erro acumulado final
+        resposta.error = 0.0;
+        for (int i = 0; i < N; i++) {
+            resposta.error += std::abs(h_xFinal[i] - h_xAnterior[i]);
+            x[i] = h_xFinal[i]; // Já popula o vetor de retorno 'x'
+        }
+
+        // Liberar a memória temporária da CPU
+        delete[] h_xFinal;
+        delete[] h_xAnterior;
 
         // Liberar a memória da GPU
         cudaFree(d_A);
         cudaFree(d_b);
         cudaFree(d_xOld);
         cudaFree(d_xNew);
-        
+
         return resposta;
     }
 
@@ -157,38 +173,41 @@ public:
             A[i][i] = soma_linha + (rand() % 10 + 1);
         }
     }
-
-    void cria_arquivo(Resposta resposta_normal, Resposta resposta_parallel, int N,int threadsPerBlock, const std::string &nome_arquivo)
+    
+    void salvar_para_csv(Resposta resposta_normal, Resposta resposta_parallel, int N, int threadsPerBlock, const std::string &nome_arquivo_csv)
     {
-        double diferenca = resposta_normal.tempo - resposta_parallel.tempo;
-        double aceleracao = resposta_normal.tempo / resposta_parallel.tempo;
+        // Tenta abrir o arquivo. Se ele não existir, vamos criá-lo e colocar o cabeçalho
+        bool arquivo_existe = false;
+        if (FILE *f = fopen(nome_arquivo_csv.c_str(), "r")) {
+            arquivo_existe = true;
+            fclose(f);
+        }
 
-        FILE *arquivo = fopen(nome_arquivo.c_str(), "a");
+        FILE *arquivo = fopen(nome_arquivo_csv.c_str(), "a");
         if (arquivo == NULL) {
-            printf("Erro ao criar o arquivo de resultados.\n");
+            printf("Erro ao abrir o arquivo CSV.\n");
             return;
         }
-        
-        // Removido o 'omp_get_max_threads()' para evitar dependência do OpenMP se não for usar
-        fprintf(arquivo, "\n╔═════════════════════════════════════════════════════════╗\n");
-        fprintf(arquivo, "║          RESULTADOS DO MÉTODO DE JACOBI (N=%4d)        ║\n", N);
-        fprintf(arquivo, "╟─────────────────────────────────────────────────────────╢\n");
-        fprintf(arquivo, "║          Threads por Bloco: %4d                        ║\n", threadsPerBlock);
-        fprintf(arquivo, "╠═══════════════════════════╤═════════════════════════════╣\n");
-        fprintf(arquivo, "║ %-26s │ %-27s ║\n", "MÉTRICA", "VALOR");
-        fprintf(arquivo, "╠═══════════════════════════╪═════════════════════════════╣\n");
-        fprintf(arquivo, "║ %-25s │ %-27.6f ║\n", "Tempo Sequencial (s)", resposta_normal.tempo);
-        fprintf(arquivo, "║ %-25s │ %-27.6f ║\n", "Tempo CUDA (s)", resposta_parallel.tempo);
-        fprintf(arquivo, "╟───────────────────────────┼─────────────────────────────╢\n");
-        fprintf(arquivo, "║ %-25s │ %-27.6f ║\n", "Erro Sequencial", resposta_normal.error);
-        fprintf(arquivo, "║ %-25s │ %-27.6f ║\n", "Erro CUDA", resposta_parallel.error);
-        fprintf(arquivo, "╟───────────────────────────┼─────────────────────────────╢\n");
-        fprintf(arquivo, "║ %-27s │ %-27d ║\n", "Iterações Sequencial", resposta_normal.iter);
-        fprintf(arquivo, "║ %-27s │ %-27d ║\n", "Iterações CUDA", resposta_parallel.iter);
-        fprintf(arquivo, "╟───────────────────────────┼─────────────────────────────╢\n");
-        fprintf(arquivo, "║ %-25s │ %-27.6f ║\n", "Ganho de Tempo (s)", diferenca);
-        fprintf(arquivo, "║ %-25s │ %-27.2f ║\n", "Speedup (x)", aceleracao);
-        fprintf(arquivo, "╚═══════════════════════════╧═════════════════════════════╝\n\n");
+
+        // Se o arquivo acabou de ser criado, escreve o cabeçalho das colunas
+        if (!arquivo_existe) {
+            fprintf(arquivo, "N,ThreadsPerBlock,TempoSequencial,TempoCUDA,ErroSequencial,ErroCUDA,IteracoesSequencial,IteracoesCUDA,Speedup\n");
+        }
+
+        double speedup = resposta_normal.tempo / resposta_parallel.tempo;
+
+        // Salva os dados brutos separados por vírgula
+        fprintf(arquivo, "%d,%d,%.6f,%.6f,%.6f,%.6f,%d,%d,%.2f\n",
+                N,
+                threadsPerBlock,
+                resposta_normal.tempo,
+                resposta_parallel.tempo,
+                resposta_normal.error,
+                resposta_parallel.error,
+                resposta_normal.iter,
+                resposta_parallel.iter,
+                speedup);
+
         fclose(arquivo);
     }
 };

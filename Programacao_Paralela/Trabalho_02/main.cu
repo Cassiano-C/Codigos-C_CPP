@@ -20,7 +20,7 @@ rodar_testes(Jacobi& Jacobi,std::string nome_arquivo)
     resposta_normal = Jacobi.jacobi_normal_N<N>(A, b, x_n);
     resposta_parallel = Jacobi.Controle_Jacobi_CUDA<N, threadsPerBlock>(A, b, x_p);
 
-    Jacobi.cria_arquivo(resposta_normal, resposta_parallel, N, threadsPerBlock, nome_arquivo);
+    Jacobi.salvar_para_csv(resposta_normal, resposta_parallel, N, threadsPerBlock, nome_arquivo);
 
     delete[] A;
     delete[] b;
@@ -32,38 +32,38 @@ int
 main()
 {
     Jacobi jacobi;
-    rodar_testes<250, N_theads_64>(jacobi, "resultados_jacobi_250.txt"); // Teste para N=250
-    rodar_testes<500, N_theads_64>(jacobi, "resultados_jacobi_500.txt"); // Teste para N=500
-    rodar_testes<1000, N_theads_64>(jacobi, "resultados_jacobi_1000.txt"); // Teste para N=1000
-    rodar_testes<1500, N_theads_64>(jacobi, "resultados_jacobi_1500.txt"); // Teste para N=1500
+    rodar_testes<250, N_theads_64>(jacobi, "resultados_jacobi_250.csv"); // Teste para N=250
+    rodar_testes<500, N_theads_64>(jacobi, "resultados_jacobi_500.csv"); // Teste para N=500
+    rodar_testes<1000, N_theads_64>(jacobi, "resultados_jacobi_1000.csv"); // Teste para N=1000
+    rodar_testes<1500, N_theads_64>(jacobi, "resultados_jacobi_1500.csv"); // Teste para N=1500
 
     printf("Fim dos testes para threads por bloco = %d\n", N_theads_64);
 
-    rodar_testes<250, N_theads_128>(jacobi, "resultados_jacobi_250.txt"); // Teste para N=250
-    rodar_testes<500, N_theads_128>(jacobi, "resultados_jacobi_500.txt"); // Teste para N=500
-    rodar_testes<1000, N_theads_128>(jacobi, "resultados_jacobi_1000.txt"); // Teste para N=1000
-    rodar_testes<1500, N_theads_128>(jacobi, "resultados_jacobi_1500.txt"); // Teste para N=1500
+    rodar_testes<250, N_theads_128>(jacobi, "resultados_jacobi_250.csv"); // Teste para N=250
+    rodar_testes<500, N_theads_128>(jacobi, "resultados_jacobi_500.csv"); // Teste para N=500
+    rodar_testes<1000, N_theads_128>(jacobi, "resultados_jacobi_1000.csv"); // Teste para N=1000
+    rodar_testes<1500, N_theads_128>(jacobi, "resultados_jacobi_1500.csv"); // Teste para N=1500
 
     printf("Fim dos testes para threads por bloco = %d\n", N_theads_128);
 
-    rodar_testes<250, N_theads_256>(jacobi, "resultados_jacobi_250.txt"); // Teste para N=250
-    rodar_testes<500, N_theads_256>(jacobi, "resultados_jacobi_500.txt"); // Teste para N=500
-    rodar_testes<1000, N_theads_256>(jacobi, "resultados_jacobi_1000.txt"); // Teste para N=1000
-    rodar_testes<1500, N_theads_256>(jacobi, "resultados_jacobi_1500.txt"); // Teste para N=1500
+    rodar_testes<250, N_theads_256>(jacobi, "resultados_jacobi_250.csv"); // Teste para N=250
+    rodar_testes<500, N_theads_256>(jacobi, "resultados_jacobi_500.csv"); // Teste para N=500
+    rodar_testes<1000, N_theads_256>(jacobi, "resultados_jacobi_1000.csv"); // Teste para N=1000
+    rodar_testes<1500, N_theads_256>(jacobi, "resultados_jacobi_1500.csv"); // Teste para N=1500
 
     printf("Fim dos testes para threads por bloco = %d\n", N_theads_256);
 
-    rodar_testes<250, N_theads_512>(jacobi, "resultados_jacobi_250.txt"); // Teste para N=250
-    rodar_testes<500, N_theads_512>(jacobi, "resultados_jacobi_500.txt"); // Teste para N=500
-    rodar_testes<1000, N_theads_512>(jacobi, "resultados_jacobi_1000.txt"); // Teste para N=1000
-    rodar_testes<1500, N_theads_512>(jacobi, "resultados_jacobi_1500.txt"); // Teste para N=1500
+    rodar_testes<250, N_theads_512>(jacobi, "resultados_jacobi_250.csv"); // Teste para N=250
+    rodar_testes<500, N_theads_512>(jacobi, "resultados_jacobi_500.csv"); // Teste para N=500
+    rodar_testes<1000, N_theads_512>(jacobi, "resultados_jacobi_1000.csv"); // Teste para N=1000
+    rodar_testes<1500, N_theads_512>(jacobi, "resultados_jacobi_1500.csv"); // Teste para N=1500
 
     printf("Fim dos testes para threads por bloco = %d\n", N_theads_512);
 
-    rodar_testes<250, N_theads_1024>(jacobi, "resultados_jacobi_250.txt"); // Teste para N=250
-    rodar_testes<500, N_theads_1024>(jacobi, "resultados_jacobi_500.txt"); // Teste para N=500
-    rodar_testes<1000, N_theads_1024>(jacobi, "resultados_jacobi_1000.txt"); // Teste para N=1000
-    rodar_testes<1500, N_theads_1024>(jacobi, "resultados_jacobi_1500.txt"); // Teste para N=1500
+    rodar_testes<250, N_theads_1024>(jacobi, "resultados_jacobi_250.csv"); // Teste para N=250
+    rodar_testes<500, N_theads_1024>(jacobi, "resultados_jacobi_500.csv"); // Teste para N=500
+    rodar_testes<1000, N_theads_1024>(jacobi, "resultados_jacobi_1000.csv"); // Teste para N=1000
+    rodar_testes<1500, N_theads_1024>(jacobi, "resultados_jacobi_1500.csv"); // Teste para N=1500
 
     printf("Fim dos testes para threads por bloco = %d\n", N_theads_1024);
 
