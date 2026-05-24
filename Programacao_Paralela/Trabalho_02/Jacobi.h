@@ -10,6 +10,10 @@
 #include <iostream>
 
 // O KERNEL DEVE FICAR FORA DA CLASSE (Função Global)
+/*
+    Este kernel é responsável por calcular uma iteração do método de Jacobi para um sistema linear Ax = b.
+    Cada thread é responsável por calcular um elemento do vetor x_new, que representa a nova aproximação da solução.
+*/ 
 __global__ void jacobi_CUDA(double *A, double *b, double *x_old, double *x_new, int N)
 {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
