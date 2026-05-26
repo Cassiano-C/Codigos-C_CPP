@@ -12,5 +12,15 @@ São codigos criados em na linguagen C e C++ durandte a minha graduação na Uni
 
 OBS: Os topicos tem proprios README para melhores explicações.
 
+## Como compilar
+Para programas .c use o comando abaixo:
+```bash
+gcc *.c -o main
+```
+Para programas .cpp use o comando abaixo:
+```bash
+g++ *.cpp -o main
+```
+
 ## Criador:
 * **Cassiano Carvalho de Souza.**
