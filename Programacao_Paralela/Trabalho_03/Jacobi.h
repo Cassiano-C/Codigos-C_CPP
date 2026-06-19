@@ -72,7 +72,7 @@ public:
         resposta_parallel.iter = 0; // CORRIGIDO: Garante reinicialização
 
         // 1. Descobrir quantas linhas ESSE processo específico vai tratar
-        int resto = N % size;
+        int resto = N % size; // Para pegar os dados uniformemente para poder distribuir para os processor
         int linhas_locais = (rank < resto) ? (N / size) + 1 : (N / size);
 
         // 2. Alocação dinâmica para evitar estouro de memória
@@ -90,12 +90,15 @@ public:
         {
             int r_linhas = (i < resto) ? (N / size) + 1 : (N / size);
 
+            // Definindo quais dados do vetor B cada processo vai enxergar
             sendcounts_v[i] = r_linhas;
             displs_v[i] = offset_v;
 
+            // Definindo quais dados do vetor A cada processo vai enxergar
             sendcounts_A[i] = r_linhas * N;
             displs_A[i] = offset_A;
 
+            // Atualizado os valores
             offset_v += r_linhas;
             offset_A += r_linhas * N;
         }
